@@ -1,7 +1,7 @@
-import streamDeck, { action, SingletonAction, type WillAppearEvent, type WillDisappearEvent, type DidReceiveSettingsEvent, type JsonObject } from "@elgato/streamdeck";
+import streamDeck, { action, SingletonAction, type WillAppearEvent, type WillDisappearEvent, type DidReceiveSettingsEvent, } from "@elgato/streamdeck";
 import { fetchStats, fetchHistory, REFRESH_INTERVAL_MS, type Stats } from "./stats.js";
 
-type Settings = { apiBase?: string; apiKey?: string };
+type Settings = { apiBase?: string; apiKey?: string; [key: string]: string | undefined };
 type Metric = "status" | "players" | "record" | "ping" | "admins" | "history";
 
 function svg(label: string, value: string, color = "#e5e7eb"): string {
@@ -21,21 +21,24 @@ function display(metric: Metric, stats: Stats): [string, string, string] {
     case "history": return ["24H", "VERLAUF", "#ffffff"];
   }
 }
-@action({ UUID: "de.boehmischechroniken.stats.status" })
 class StatusAction extends SingletonAction<Settings> {
   private readonly timers = new Map<string, ReturnType<typeof setInterval>>();
+  private readonly settings = new Map<string, Settings>();
   constructor(private readonly metric: Metric) { super(); }
   override async onWillAppear(ev: WillAppearEvent<Settings>): Promise<void> {
     const key = ev.action.id;
+    this.settings.set(key, ev.payload.settings);
     await this.render(ev.action, ev.payload.settings);
-    this.timers.set(key, setInterval(() => { void this.render(ev.action, ev.payload.settings); }, REFRESH_INTERVAL_MS));
+    this.timers.set(key, setInterval(() => { void this.render(ev.action, this.settings.get(key) ?? {}); }, REFRESH_INTERVAL_MS));
   }
   override onWillDisappear(ev: WillDisappearEvent<Settings>): void {
     const timer = this.timers.get(ev.action.id);
     if (timer) clearInterval(timer);
     this.timers.delete(ev.action.id);
+    this.settings.delete(ev.action.id);
   }
   override async onDidReceiveSettings(ev: DidReceiveSettingsEvent<Settings>): Promise<void> {
+    this.settings.set(ev.action.id, ev.payload.settings);
     await this.render(ev.action, ev.payload.settings);
   }
   private async render(target: { setImage(image: string): Promise<void> }, settings: Settings): Promise<void> {
@@ -58,7 +61,27 @@ class StatusAction extends SingletonAction<Settings> {
   }
 }
 
-const metrics: Metric[] = ["status", "players", "record", "ping", "admins", "history"];
-for (const metric of metrics) {
-  // Each action needs a distinct UUID; registered through subclass wrappers below.
-}
+@action({ UUID: "de.boehmischechroniken.stats.status" })
+class StatusAction extends StatusAction { constructor() { super("status"); } }
+
+@action({ UUID: "de.boehmischechroniken.stats.players" })
+class PlayersAction extends StatusAction { constructor() { super("players"); } }
+
+@action({ UUID: "de.boehmischechroniken.stats.record" })
+class RecordAction extends StatusAction { constructor() { super("record"); } }
+
+@action({ UUID: "de.boehmischechroniken.stats.ping" })
+class PingAction extends StatusAction { constructor() { super("ping"); } }
+
+@action({ UUID: "de.boehmischechroniken.stats.admins" })
+class AdminsAction extends StatusAction { constructor() { super("admins"); } }
+
+@action({ UUID: "de.boehmischechroniken.stats.history" })
+class HistoryAction extends StatusAction { constructor() { super("history"); } }
+streamDeck.actions.registerAction(new StatusAction());
+streamDeck.actions.registerAction(new PlayersAction());
+streamDeck.actions.registerAction(new RecordAction());
+streamDeck.actions.registerAction(new PingAction());
+streamDeck.actions.registerAction(new AdminsAction());
+streamDeck.actions.registerAction(new HistoryAction());
+void streamDeck.connect();
