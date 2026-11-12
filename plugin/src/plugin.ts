@@ -1,7 +1,8 @@
 import streamDeck, { action, SingletonAction, type WillAppearEvent, type WillDisappearEvent, type DidReceiveSettingsEvent, } from "@elgato/streamdeck";
-import { fetchStats, fetchHistory, REFRESH_INTERVAL_MS, type Stats } from "./stats.js";
+import { REFRESH_INTERVAL_MS, type Stats } from "./stats.js";
+import { refresh, getStats, getHistory } from "./local-stats.js";
 
-type Settings = { apiBase?: string; apiKey?: string; [key: string]: string | undefined };
+type Settings = { [key: string]: string | undefined };
 type Metric = "status" | "players" | "record" | "ping" | "admins" | "history";
 
 function svg(label: string, value: string, color = "#e5e7eb"): string {
@@ -57,15 +58,12 @@ class MetricAction extends SingletonAction<Settings> {
     await this.render(ev.action, ev.payload.settings);
   }
   private async render(target: { setImage(image: string): Promise<void> }, settings: Settings): Promise<void> {
-    if (!settings.apiBase || !settings.apiKey) {
-      await target.setImage(imageData(svg("SETUP", "API FEHLT", "#efb56b")));
-      return;
-    }
     try {
-      const stats = await fetchStats(settings.apiBase, settings.apiKey);
+      await refresh();
+      const stats = getStats();
       const [label, value, color] = display(this.metric, stats);
       if (this.metric === "history") {
-        const history = await fetchHistory(settings.apiBase, settings.apiKey);
+        const history = getHistory();
         await target.setImage(imageData(historySvg(history.samples)));
       } else {
         await target.setImage(imageData(svg(label, value, color)));
