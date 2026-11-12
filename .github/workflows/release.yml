@@ -1,0 +1,31 @@
+name: Publish Stream Deck release
+on:
+  push:
+    branches:
+      - main
+permissions:
+  contents: write
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install
+      - run: npm run build -w plugin
+      - run: npx --yes esbuild plugin/src/plugin.ts --bundle --platform=node --format=cjs --target=node20 --outfile=build/de.boehmischechroniken.stats.sdPlugin/plugin.js
+      - run: python -m pip install pillow
+      - run: python scripts/assemble-plugin.py
+      - name: Create installable package
+        run: |
+          cd build
+          zip -qr Boehmische-Chroniken.streamDeckPlugin de.boehmischechroniken.stats.sdPlugin
+      - run: python scripts/validate-package.py
+      - name: Publish release with installer
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "v0.1.0" build/Boehmische-Chroniken.streamDeckPlugin --target "${GITHUB_SHA}" --title "Böhmische Chroniken v0.1.0 (Standalone)" --notes "Standalone Stream Deck plugin. No external statistics server required. Player statistics are collected locally while Stream Deck runs. Ping and admin count are not available from the public listing."
