@@ -26,6 +26,8 @@ jobs:
         run: |
           cd build
           zip -qr Boehmische-Chroniken.streamDeckPlugin de.boehmischechroniken.stats.sdPlugin
+      - name: Validate plugin package
+        run: python scripts/validate-package.py
       - uses: actions/upload-artifact@v4
         with:
           name: streamdeck-prototype-unpacked
