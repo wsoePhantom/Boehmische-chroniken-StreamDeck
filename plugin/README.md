@@ -1,15 +1,15 @@
-# Böhmische Chroniken – Stream Deck (development preview)
+# Stream Deck plugin – Stable 1.0.0
 
-Six Stream Deck actions are registered in `src/plugin.ts`: status, player count, peak, ping, admins, and 24-hour history.
+Vier Aktionen: Serverstatus, Spieler online, Spielerrekord und 24-Stunden-Verlauf.
 
-## Build
-On pushes to `dev`, GitHub Actions attempts to compile the backend, run backend tests, bundle the Stream Deck entrypoint and assemble an **unpacked** `.sdPlugin` directory. The build artifact is not a signed or officially packaged `.streamDeckPlugin` installer. Inspect the workflow run before using it.
+Der Node.js-Prozess des Stream-Deck-Plugins fragt die öffentliche KCD:MP-Serverliste direkt ab und schreibt die Historie in den lokalen Windows-AppData-Ordner. Kein Backend, keine Konfiguration, kein API-Schlüssel.
 
-The Property Inspector at `property-inspector/index.html` configures API base URL and bearer key per button. The key is stored in action settings; do not reuse a privileged server credential.
+## Build und Tests
+```sh
+npm install
+npm test
+npm run build
+```
+Der GitHub-Actions-Workflow bündelt `src/plugin.ts` für Node.js 20, erzeugt die Icons und validiert das installierbare `.streamDeckPlugin`-Paket.
 
-## Current limitations
-- The master-list HTML parser has not been validated against live markup; no successful live data ingestion is established.
-- The 24-hour button shows the sample count, not a graph.
-- Ping and admin counts have no data source and display N/V.
-- The backend must remain running for history and record collection.
-- The plugin has not been tested on a physical Stream Deck.
+Die Verlaufsanzeige kann nur Messwerte zeigen, die während laufender Stream-Deck-Software erfasst wurden.
