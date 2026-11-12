@@ -1,10 +1,10 @@
-# Installation und Betrieb – Stable v1.0.0
+# Installation und Betrieb – Stable v1.0.1
 
 Es ist **kein externer Server** erforderlich. Die Stream-Deck-Software auf Windows führt das Plugin aus und fragt die öffentliche KCD:MP-Serverliste direkt ab.
 
 1. `Boehmische-Chroniken.streamDeckPlugin` aus dem Release herunterladen.
 2. Per Doppelklick installieren.
-3. Serverstatus, Spieler online, Spielerrekord und 24h-Verlauf auf Tasten legen.
+3. Serverstatus, Spieler online, Spielerrekord und 5h-Verlauf auf Tasten legen.
 
 Lokaler Speicher: `%APPDATA%\BoehmischeChroniken\streamdeck-stats.json`.
 

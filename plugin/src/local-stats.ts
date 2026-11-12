@@ -5,7 +5,7 @@ import type { Stats, History, Sample } from "./stats.js";
 
 const URL = "https://kcd-mp.com/server-list";
 const ADDRESS = "45.132.88.78:7777";
-const PERIOD = 86_400_000;
+const PERIOD = 18_000_000;
 const REFRESH = 60_000;
 const file = join(process.env.APPDATA || join(homedir(), "AppData", "Roaming"), "BoehmischeChroniken", "streamdeck-stats.json");
 type State = { record: number; samples: Sample[]; latest: { players: number; maximum: number; at: string } | null };
@@ -80,5 +80,5 @@ export function getStats(): Stats {
 }
 export function getHistory(): History {
   trim();
-  return { period: "24h", samples: [...state.samples] };
+  return { period: "5h", samples: [...state.samples] };
 }

@@ -2,7 +2,7 @@
   "Name": "Böhmische Chroniken",
   "Description": "Eigenständige KCD:MP-Serverstatistiken ohne zusätzliche Infrastruktur",
   "Author": "Böhmische Chroniken",
-  "Version": "1.0.0.0",
+  "Version": "1.0.1.0",
   "SDKVersion": 2,
   "Software": {
     "MinimumVersion": "6.5"
@@ -62,7 +62,7 @@
       ]
     },
     {
-      "Name": "Spielerverlauf 24h",
+      "Name": "Spielerverlauf 5h",
       "UUID": "de.boehmischechroniken.stats.history",
       "Icon": "imgs/history",
       "Tooltip": "Böhmische Chroniken: history",

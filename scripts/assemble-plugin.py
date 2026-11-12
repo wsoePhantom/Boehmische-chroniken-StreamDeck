@@ -11,7 +11,7 @@ copy2(root / "plugin/manifest.json", out / "manifest.json")
 names = {
     "plugin": "BC", "category": "BC",
     "status": "ON", "players": "PL", "record": "MAX",
-    "history": "24H"
+    "history": "5H"
 }
 for name, label in names.items():
     for scale in (1, 2):

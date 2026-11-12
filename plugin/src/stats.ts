@@ -6,5 +6,5 @@ export type Stats = {
   source: "public-master-list-local";
 };
 export type Sample = { timestamp: string; players: number };
-export type History = { period: "24h"; samples: Sample[] };
+export type History = { period: "5h"; samples: Sample[] };
 export const REFRESH_INTERVAL_MS = 60_000;
