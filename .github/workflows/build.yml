@@ -1,4 +1,4 @@
-name: Build Stream Deck prototype
+name: Test standalone Stream Deck plugin
 on:
   push:
     branches: [dev]
@@ -14,8 +14,9 @@ jobs:
         with:
           node-version: '22'
       - run: npm install
+      - run: npm test
       - run: npm run build -w plugin
-      - run: npx --yes esbuild plugin/src/plugin.ts --bundle --platform=node --format=cjs --target=node20 --outfile=build/de.boehmischechroniken.stats.sdPlugin/plugin.js
+      - run: npx esbuild plugin/src/plugin.ts --bundle --platform=node --format=cjs --target=node20 --outfile=build/de.boehmischechroniken.stats.sdPlugin/plugin.js
       - run: python -m pip install pillow
       - run: python scripts/assemble-plugin.py
       - name: Create installable Stream Deck archive
@@ -26,7 +27,7 @@ jobs:
         run: python scripts/validate-package.py
       - uses: actions/upload-artifact@v4
         with:
-          name: streamdeck-prototype-unpacked
+          name: streamdeck-standalone-1.0.0
           path: |
             build/de.boehmischechroniken.stats.sdPlugin/
             build/Boehmische-Chroniken.streamDeckPlugin
