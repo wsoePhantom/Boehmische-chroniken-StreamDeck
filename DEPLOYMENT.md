@@ -1,34 +1,13 @@
-# Betrieb und Installation
+# Stream Deck – Standalone-Installation
 
-## Voraussetzungen
-- Windows mit Elgato Stream Deck Software 6.5 oder neuer
-- Ein laufender Statistik-API-Dienst, den der Stream-Deck-PC erreichen kann
-- Ein selbst gewählter, langer API-Schlüssel
+Das Plugin benötigt **keinen eigenen Server**, keine Docker-Installation und keinen API-Schlüssel. Es fragt die öffentliche KCD:MP-Serverliste selbst ab.
 
-## Statistik-API starten
-Im Repository:
-```sh
-export STATS_API_KEY='EIN-LANGER-ZUFAELLIGER-SCHLUESSEL'
-docker compose up -d --build
-```
-Die Compose-Datei bindet Port 3100 ausschließlich an 127.0.0.1. Läuft die API auf einem anderen Rechner, **nicht** ungeschützt Port 3100 ins Internet öffnen. Stattdessen HTTPS-Reverse-Proxy mit Zugriffskontrolle oder ein privates VPN verwenden.
+1. Die Datei `Boehmische-Chroniken.streamDeckPlugin` aus einem erfolgreich geprüften GitHub-Release beziehen.
+2. Unter Windows mit installierter Stream-Deck-Software öffnen.
+3. Die gewünschten Aktionen auf Stream-Deck-Tasten ziehen.
 
-Prüfen:
-```sh
-curl http://127.0.0.1:3100/health
-curl -H "Authorization: Bearer $STATS_API_KEY" http://127.0.0.1:3100/api/v1/status
-```
-Die Daten werden im Docker-Volume `stats-data` gespeichert. Der 24-Stunden-Verlauf füllt sich erst mit laufender Datenerfassung.
+Die Spielerzahl wird im Abstand von etwa 60 Sekunden abgefragt. Die lokale Statistik wird unter `%APPDATA%\\BoehmischeChroniken\\streamdeck-stats.json` gespeichert. Der Spielerrekord bleibt über Neustarts hinweg erhalten.
 
-## Stream Deck
-1. Die `.streamDeckPlugin`-Datei aus einem erfolgreichen Build oder Release beziehen.
-2. Unter Windows mit der Stream-Deck-Software öffnen und installieren.
-3. Eine der sechs Aktionen auf eine Taste ziehen.
-4. In den Aktionseinstellungen die erreichbare API-Basis-URL (z. B. `http://127.0.0.1:3100/` für lokale Installation) und denselben API-Schlüssel eintragen.
-5. Für jede verwendete Taste die Einstellungen hinterlegen.
+**Wichtig:** Die Stream-Deck-Software muss für die Datenerfassung laufen. Offline-Zeiträume können nicht rückwirkend ergänzt werden. Die öffentliche Serverliste enthält keinen verlässlichen Game-Ping und keine Admin-Anzahl; entsprechende Aktionen zeigen `N/V`. Ohne Internetverbindung können keine neuen Daten geladen werden.
 
-## Einschränkungen
-- Die öffentliche Serverliste liefert Spielerzahlen, aber keine verlässliche Admin-Anzahl und keinen echten Game-Server-Ping. Diese beiden Tasten zeigen `N/V` an.
-- Ohne laufende API gibt es keine aktuellen Werte und keinen historischen Verlauf.
-- Ein erfolgreiches CI-Build ersetzt keinen manuellen Windows- und Stream-Deck-Hardwaretest.
-- API-Schlüssel werden in den Stream-Deck-Aktionseinstellungen gespeichert. Dafür nur einen dedizierten, eingeschränkten Schlüssel verwenden.
+Der alte Backend-/Docker-Code bleibt vorläufig im Repository, ist aber für den Standalone-Betrieb nicht erforderlich. Die neue Standalone-Version muss noch in CI und auf Windows geprüft werden.
