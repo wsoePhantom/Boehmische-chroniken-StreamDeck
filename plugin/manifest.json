@@ -1,0 +1,113 @@
+{
+  "Name": "Böhmische Chroniken",
+  "Description": "KCD:MP Serverstatistiken für Böhmische Chroniken",
+  "Author": "Böhmische Chroniken",
+  "Version": "0.1.0",
+  "SDKVersion": 2,
+  "Software": {
+    "MinimumVersion": "6.5"
+  },
+  "OS": [
+    {
+      "Platform": "windows",
+      "MinimumVersion": "10"
+    }
+  ],
+  "CodePath": "plugin.js",
+  "Icon": "imgs/plugin",
+  "Category": "Böhmische Chroniken",
+  "CategoryIcon": "imgs/category",
+  "UUID": "de.boehmischechroniken.stats",
+  "Actions": [
+    {
+      "Name": "Serverstatus",
+      "UUID": "de.boehmischechroniken.stats.status",
+      "Icon": "imgs/status",
+      "Tooltip": "Böhmische Chroniken: status",
+      "Controllers": [
+        "Keypad"
+      ],
+      "States": [
+        {
+          "Image": "imgs/status"
+        }
+      ],
+      "PropertyInspectorPath": "property-inspector/index.html"
+    },
+    {
+      "Name": "Spieler online",
+      "UUID": "de.boehmischechroniken.stats.players",
+      "Icon": "imgs/players",
+      "Tooltip": "Böhmische Chroniken: players",
+      "Controllers": [
+        "Keypad"
+      ],
+      "States": [
+        {
+          "Image": "imgs/players"
+        }
+      ],
+      "PropertyInspectorPath": "property-inspector/index.html"
+    },
+    {
+      "Name": "Spielerrekord",
+      "UUID": "de.boehmischechroniken.stats.record",
+      "Icon": "imgs/record",
+      "Tooltip": "Böhmische Chroniken: record",
+      "Controllers": [
+        "Keypad"
+      ],
+      "States": [
+        {
+          "Image": "imgs/record"
+        }
+      ],
+      "PropertyInspectorPath": "property-inspector/index.html"
+    },
+    {
+      "Name": "Ping",
+      "UUID": "de.boehmischechroniken.stats.ping",
+      "Icon": "imgs/ping",
+      "Tooltip": "Böhmische Chroniken: ping",
+      "Controllers": [
+        "Keypad"
+      ],
+      "States": [
+        {
+          "Image": "imgs/ping"
+        }
+      ],
+      "PropertyInspectorPath": "property-inspector/index.html"
+    },
+    {
+      "Name": "Admins online",
+      "UUID": "de.boehmischechroniken.stats.admins",
+      "Icon": "imgs/admins",
+      "Tooltip": "Böhmische Chroniken: admins",
+      "Controllers": [
+        "Keypad"
+      ],
+      "States": [
+        {
+          "Image": "imgs/admins"
+        }
+      ],
+      "PropertyInspectorPath": "property-inspector/index.html"
+    },
+    {
+      "Name": "Spielerverlauf 24h",
+      "UUID": "de.boehmischechroniken.stats.history",
+      "Icon": "imgs/history",
+      "Tooltip": "Böhmische Chroniken: history",
+      "Controllers": [
+        "Keypad"
+      ],
+      "States": [
+        {
+          "Image": "imgs/history"
+        }
+      ],
+      "PropertyInspectorPath": "property-inspector/index.html"
+    }
+  ]
+}
