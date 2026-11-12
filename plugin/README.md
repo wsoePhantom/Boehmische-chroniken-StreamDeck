@@ -1,6 +1,6 @@
-# Stream Deck plugin – Stable 1.0.0
+# Stream Deck plugin – Stable 1.0.1
 
-Vier Aktionen: Serverstatus, Spieler online, Spielerrekord und 24-Stunden-Verlauf.
+Vier Aktionen: Serverstatus, Spieler online, Spielerrekord und 5-Stunden-Verlauf.
 
 Der Node.js-Prozess des Stream-Deck-Plugins fragt die öffentliche KCD:MP-Serverliste direkt ab und schreibt die Historie in den lokalen Windows-AppData-Ordner. Kein Backend, keine Konfiguration, kein API-Schlüssel.
 
