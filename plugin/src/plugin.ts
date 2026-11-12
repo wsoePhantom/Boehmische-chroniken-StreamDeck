@@ -3,7 +3,7 @@ import { REFRESH_INTERVAL_MS, type Stats } from "./stats.js";
 import { refresh, getStats, getHistory } from "./local-stats.js";
 
 type Settings = { [key: string]: string | undefined };
-type Metric = "status" | "players" | "record" | "ping" | "admins" | "history";
+type Metric = "status" | "players" | "record" | "history";
 
 function svg(label: string, value: string, color = "#e5e7eb"): string {
   const safe = (s: string) => s.replace(/[&<>"']/g, c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&apos;" }[c]!));
@@ -30,8 +30,6 @@ function display(metric: Metric, stats: Stats): [string, string, string] {
     case "status": return ["SERVER", stats.online === null ? "UNBEKANNT" : stats.online ? "ONLINE" : "OFFLINE", stats.online === true ? "#70d69b" : "#efb56b"];
     case "players": return ["SPIELER", stats.players.current === null ? "–" : `${stats.players.current}/${stats.players.maximum ?? "?"}`, "#ffffff"];
     case "record": return ["REKORD", String(stats.players.record), "#edca80"];
-    case "ping": return ["PING", stats.latencyMs === null ? "N/V" : `${stats.latencyMs} ms`, "#ffffff"];
-    case "admins": return ["ADMINS", stats.adminsOnline === null ? "N/V" : String(stats.adminsOnline), "#ffffff"];
     case "history": return ["24H", "VERLAUF", "#ffffff"];
   }
 }
@@ -85,19 +83,11 @@ class PlayersAction extends MetricAction { constructor() { super("players"); } }
 @action({ UUID: "de.boehmischechroniken.stats.record" })
 class RecordAction extends MetricAction { constructor() { super("record"); } }
 
-@action({ UUID: "de.boehmischechroniken.stats.ping" })
-class PingAction extends MetricAction { constructor() { super("ping"); } }
-
-@action({ UUID: "de.boehmischechroniken.stats.admins" })
-class AdminsAction extends MetricAction { constructor() { super("admins"); } }
-
 @action({ UUID: "de.boehmischechroniken.stats.history" })
 class HistoryAction extends MetricAction { constructor() { super("history"); } }
 streamDeck.actions.registerAction(new StatusAction());
 streamDeck.actions.registerAction(new PlayersAction());
 streamDeck.actions.registerAction(new RecordAction());
-streamDeck.actions.registerAction(new PingAction());
-streamDeck.actions.registerAction(new AdminsAction());
 streamDeck.actions.registerAction(new HistoryAction());
 void streamDeck.connect();
 void refresh();
