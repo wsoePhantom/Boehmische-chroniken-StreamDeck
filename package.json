@@ -1,0 +1,13 @@
+{
+  "name": "boehmische-chroniken-streamdeck",
+  "private": true,
+  "workspaces": [
+    "backend",
+    "plugin"
+  ],
+  "scripts": {
+    "dev:api": "npm run dev -w backend",
+    "build": "npm run build --workspaces",
+    "test": "npm run test -w backend"
+  }
+}
