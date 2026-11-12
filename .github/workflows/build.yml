@@ -2,6 +2,8 @@ name: Build Stream Deck prototype
 on:
   push:
     branches: [dev]
+  pull_request:
+    branches: [main]
   workflow_dispatch:
 jobs:
   build:
