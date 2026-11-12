@@ -1,7 +1,7 @@
 FROM node:22-alpine AS build
 WORKDIR /app
-COPY package.json backend/package.json plugin/package.json ./
-RUN mkdir -p backend plugin && true
+COPY package.json ./
+RUN mkdir -p backend plugin
 COPY backend/package.json backend/package.json
 COPY plugin/package.json plugin/package.json
 RUN npm install
