@@ -9,7 +9,10 @@ manifest = json.loads((folder / "manifest.json").read_text(encoding="utf-8"))
 assert manifest["SDKVersion"] == 2
 assert manifest["CodePath"] == "plugin.js"
 assert (folder / manifest["CodePath"]).stat().st_size > 0
-assert len(manifest["Actions"]) == 6
+assert len(manifest["Actions"]) == 4
+assert manifest["Version"] == "1.0.0.0"
+assert manifest["Nodejs"]["Version"] == "20"
+assert {a["UUID"].rsplit(".", 1)[-1] for a in manifest["Actions"]} == {"status", "players", "record", "history"}
 uuids = [a["UUID"] for a in manifest["Actions"]]
 assert len(set(uuids)) == len(uuids)
 for item in ["Icon", "CategoryIcon"]:
