@@ -98,3 +98,5 @@ streamDeck.actions.registerAction(new PingAction());
 streamDeck.actions.registerAction(new AdminsAction());
 streamDeck.actions.registerAction(new HistoryAction());
 void streamDeck.connect();
+void refresh();
+setInterval(() => { void refresh(); }, REFRESH_INTERVAL_MS);
