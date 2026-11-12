@@ -1,0 +1,39 @@
+name: Publish Stream Deck release
+on:
+  push:
+    tags:
+      - 'v*'
+permissions:
+  contents: write
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Require release commit on main
+        run: |
+          git fetch origin main
+          git merge-base --is-ancestor HEAD origin/main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install
+      - run: npm run build -w backend
+      - run: npm run test -w backend
+      - name: Validate live master-list parsing
+        run: node -e 'import("./backend/dist/master-list.js").then(async m => { const listing = await m.fetchPublicListing(); if (!listing) throw new Error("Target server not parsed from live master list"); console.log(listing); })'
+      - run: npm run build -w plugin
+      - run: npx --yes esbuild plugin/src/plugin.ts --bundle --platform=node --format=cjs --target=node20 --outfile=build/de.boehmischechroniken.stats.sdPlugin/plugin.js
+      - run: python -m pip install pillow
+      - run: python scripts/assemble-plugin.py
+      - name: Create installable package
+        run: |
+          cd build
+          zip -qr Boehmische-Chroniken.streamDeckPlugin de.boehmischechroniken.stats.sdPlugin
+      - run: python scripts/validate-package.py
+      - name: Publish release with installer
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "${GITHUB_REF_NAME}" build/Boehmische-Chroniken.streamDeckPlugin --title "Böhmische Chroniken ${GITHUB_REF_NAME}" --generate-notes
