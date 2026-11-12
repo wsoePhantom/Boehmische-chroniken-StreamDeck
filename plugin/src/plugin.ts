@@ -41,6 +41,8 @@ class MetricAction extends SingletonAction<Settings> {
   override async onWillAppear(ev: WillAppearEvent<Settings>): Promise<void> {
     const key = ev.action.id;
     this.settings.set(key, ev.payload.settings);
+    const existing = this.timers.get(key);
+    if (existing) clearInterval(existing);
     await this.render(ev.action, ev.payload.settings);
     this.timers.set(key, setInterval(() => { void this.render(ev.action, this.settings.get(key) ?? {}); }, REFRESH_INTERVAL_MS));
   }
