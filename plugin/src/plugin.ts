@@ -11,6 +11,19 @@ function svg(label: string, value: string, color = "#e5e7eb"): string {
 function imageData(svgString: string): string {
   return "data:image/svg+xml," + encodeURIComponent(svgString);
 }
+function historySvg(samples: { timestamp: string; players: number }[]): string {
+  const now = Date.now();
+  const points = samples.filter(s => Number.isFinite(s.players) && s.players >= 0 && Number.isFinite(Date.parse(s.timestamp)) && Date.parse(s.timestamp) >= now - 86_400_000 && Date.parse(s.timestamp) <= now).sort((a,b) => Date.parse(a.timestamp)-Date.parse(b.timestamp));
+  if (!points.length) return svg("24H VERLAUF", "KEINE DATEN");
+  const max = Math.max(1, ...points.map(s => s.players));
+  const path = points.map((s,i) => {
+    const x = 12 + (Date.parse(s.timestamp) - (now - 86_400_000)) / 86_400_000 * 120;
+    const y = 119 - s.players / max * 65;
+    return `${i ? "L" : "M"}${x.toFixed(1)} ${y.toFixed(1)}`;
+  }).join(" ");
+  const current = points[points.length-1].players;
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="144" height="144" viewBox="0 0 144 144"><rect width="144" height="144" rx="15" fill="#1e2b24"/><text x="72" y="24" fill="#aab8ac" font-size="15" font-family="Arial" text-anchor="middle">SPIELER 24H</text><text x="72" y="49" fill="#ffffff" font-size="20" font-weight="bold" font-family="Arial" text-anchor="middle">${current}</text><path d="${path}" stroke="#70d69b" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" fill="none"/><text x="12" y="136" fill="#aab8ac" font-size="10">-24h</text><text x="132" y="136" fill="#aab8ac" font-size="10" text-anchor="end">jetzt</text></svg>`;
+}
 function display(metric: Metric, stats: Stats): [string, string, string] {
   switch (metric) {
     case "status": return ["SERVER", stats.online === null ? "UNBEKANNT" : stats.online ? "ONLINE" : "OFFLINE", stats.online === true ? "#70d69b" : "#efb56b"];
@@ -51,7 +64,7 @@ class MetricAction extends SingletonAction<Settings> {
       const [label, value, color] = display(this.metric, stats);
       if (this.metric === "history") {
         const history = await fetchHistory(settings.apiBase, settings.apiKey);
-        await target.setImage(imageData(svg("24H", history.samples.length ? `${history.samples.length} PUNKTE` : "KEINE DATEN")));
+        await target.setImage(imageData(historySvg(history.samples)));
       } else {
         await target.setImage(imageData(svg(label, value, color)));
       }
