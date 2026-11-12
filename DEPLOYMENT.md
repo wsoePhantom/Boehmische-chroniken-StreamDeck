@@ -1,13 +1,13 @@
-# Stream Deck – Standalone-Installation
+# Installation und Betrieb – Stable v1.0.0
 
-Das Plugin benötigt **keinen eigenen Server**, keine Docker-Installation und keinen API-Schlüssel. Es fragt die öffentliche KCD:MP-Serverliste selbst ab.
+Es ist **kein externer Server** erforderlich. Die Stream-Deck-Software auf Windows führt das Plugin aus und fragt die öffentliche KCD:MP-Serverliste direkt ab.
 
-1. Die Datei `Boehmische-Chroniken.streamDeckPlugin` aus einem erfolgreich geprüften GitHub-Release beziehen.
-2. Unter Windows mit installierter Stream-Deck-Software öffnen.
-3. Die gewünschten Aktionen auf Stream-Deck-Tasten ziehen.
+1. `Boehmische-Chroniken.streamDeckPlugin` aus dem Release herunterladen.
+2. Per Doppelklick installieren.
+3. Serverstatus, Spieler online, Spielerrekord und 24h-Verlauf auf Tasten legen.
 
-Die Spielerzahl wird im Abstand von etwa 60 Sekunden abgefragt. Die lokale Statistik wird unter `%APPDATA%\\BoehmischeChroniken\\streamdeck-stats.json` gespeichert. Der Spielerrekord bleibt über Neustarts hinweg erhalten.
+Lokaler Speicher: `%APPDATA%\BoehmischeChroniken\streamdeck-stats.json`.
 
-**Wichtig:** Die Stream-Deck-Software muss für die Datenerfassung laufen. Offline-Zeiträume können nicht rückwirkend ergänzt werden. Die öffentliche Serverliste enthält keinen verlässlichen Game-Ping und keine Admin-Anzahl; entsprechende Aktionen zeigen `N/V`. Ohne Internetverbindung können keine neuen Daten geladen werden.
+Die Abfrage läuft alle 60 Sekunden, solange das Plugin läuft. Ohne laufende Stream-Deck-Software entstehen keine Messwerte. Bestehende lokale Daten werden beim Update nicht gelöscht.
 
-Der alte Backend-/Docker-Code bleibt vorläufig im Repository, ist aber für den Standalone-Betrieb nicht erforderlich. Die neue Standalone-Version muss noch in CI und auf Windows geprüft werden.
+Fehlerdiagnose: `%APPDATA%\Elgato\StreamDeck\logs\StreamDeck.log`.

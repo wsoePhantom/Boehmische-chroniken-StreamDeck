@@ -1,8 +1,8 @@
 {
   "Name": "Böhmische Chroniken",
-  "Description": "KCD:MP Serverstatistiken für Böhmische Chroniken",
+  "Description": "Eigenständige KCD:MP-Serverstatistiken ohne zusätzliche Infrastruktur",
   "Author": "Böhmische Chroniken",
-  "Version": "0.1.2.0",
+  "Version": "1.0.0.0",
   "SDKVersion": 2,
   "Software": {
     "MinimumVersion": "6.5"
@@ -58,34 +58,6 @@
       "States": [
         {
           "Image": "imgs/record"
-        }
-      ]
-    },
-    {
-      "Name": "Ping",
-      "UUID": "de.boehmischechroniken.stats.ping",
-      "Icon": "imgs/ping",
-      "Tooltip": "Böhmische Chroniken: ping",
-      "Controllers": [
-        "Keypad"
-      ],
-      "States": [
-        {
-          "Image": "imgs/ping"
-        }
-      ]
-    },
-    {
-      "Name": "Admins online",
-      "UUID": "de.boehmischechroniken.stats.admins",
-      "Icon": "imgs/admins",
-      "Tooltip": "Böhmische Chroniken: admins",
-      "Controllers": [
-        "Keypad"
-      ],
-      "States": [
-        {
-          "Image": "imgs/admins"
         }
       ]
     },

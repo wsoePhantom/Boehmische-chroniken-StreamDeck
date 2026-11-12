@@ -75,7 +75,7 @@ export function getStats(): Stats {
   return {
     online: fresh ? true : null, stale: !fresh,
     players: { current: fresh ? state.latest!.players : null, maximum: state.latest?.maximum ?? null, record: state.record },
-    adminsOnline: null, latencyMs: null, lastUpdated: state.latest?.at ?? null, source: "public-master-list-local"
+    lastUpdated: state.latest?.at ?? null, source: "public-master-list-local"
   };
 }
 export function getHistory(): History {

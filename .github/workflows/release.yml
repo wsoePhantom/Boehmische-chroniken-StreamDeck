@@ -16,8 +16,9 @@ jobs:
         with:
           node-version: '22'
       - run: npm install
+      - run: npm test
       - run: npm run build -w plugin
-      - run: npx --yes esbuild plugin/src/plugin.ts --bundle --platform=node --format=cjs --target=node20 --outfile=build/de.boehmischechroniken.stats.sdPlugin/plugin.js
+      - run: npx esbuild plugin/src/plugin.ts --bundle --platform=node --format=cjs --target=node20 --outfile=build/de.boehmischechroniken.stats.sdPlugin/plugin.js
       - run: python -m pip install pillow
       - run: python scripts/assemble-plugin.py
       - name: Create installable package
@@ -25,7 +26,12 @@ jobs:
           cd build
           zip -qr Boehmische-Chroniken.streamDeckPlugin de.boehmischechroniken.stats.sdPlugin
       - run: python scripts/validate-package.py
-      - name: Publish release with installer
+      - name: Publish stable v1.0.0 with installer
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release create "v0.1.2" build/Boehmische-Chroniken.streamDeckPlugin --target "${GITHUB_SHA}" --title "Böhmische Chroniken v0.1.2 (Standalone)" --notes "Standalone Stream Deck plugin. No external statistics server required. Player statistics are collected locally while Stream Deck runs. Ping and admin count are not available from the public listing."
+        run: |
+          if gh release view v1.0.0 >/dev/null 2>&1; then
+            echo "Stable release v1.0.0 already exists; leaving it unchanged."
+            exit 0
+          fi
+          gh release create v1.0.0 build/Boehmische-Chroniken.streamDeckPlugin --target "${GITHUB_SHA}" --title "Böhmische Chroniken v1.0.0 – Stable" --notes "First stable standalone release. Includes server status, current players, local player record and 24-hour history. Requires only Stream Deck on Windows and access to the public KCD:MP server list. Removes unsupported ping/admin actions and all hosted-backend infrastructure. Existing local statistics remain intact."

@@ -1,18 +1,17 @@
-"""Generate provisional Stream Deck PNG assets and assemble an unpacked plugin directory."""
+"""Generate Stream Deck PNG assets and assemble the standalone plugin."""
 from pathlib import Path
-from shutil import copy2, copytree
+from shutil import copy2
 from PIL import Image, ImageDraw, ImageFont
 
 root = Path(__file__).resolve().parents[1]
 out = root / "build/de.boehmischechroniken.stats.sdPlugin"
 (out / "imgs").mkdir(parents=True, exist_ok=True)
 copy2(root / "plugin/manifest.json", out / "manifest.json")
-copytree(root / "plugin/property-inspector", out / "property-inspector", dirs_exist_ok=True)
 
 names = {
     "plugin": "BC", "category": "BC",
     "status": "ON", "players": "PL", "record": "MAX",
-    "ping": "MS", "admins": "ADM", "history": "24H"
+    "history": "24H"
 }
 for name, label in names.items():
     for scale in (1, 2):

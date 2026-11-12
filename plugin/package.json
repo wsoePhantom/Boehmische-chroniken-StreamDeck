@@ -1,16 +1,18 @@
 {
   "name": "@bc/streamdeck",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "tsc -p tsconfig.json"
+    "build": "tsc -p tsconfig.json",
+    "test": "esbuild src/local-stats.ts --bundle --platform=node --format=esm --outfile=dist/local-stats-test.mjs && node --test tests/*.test.mjs"
   },
   "dependencies": {
     "@elgato/streamdeck": "^2.0.0"
   },
   "devDependencies": {
     "@types/node": "^22.13.0",
-    "typescript": "^5.7.3"
+    "typescript": "^5.7.3",
+    "esbuild": "^0.25.0"
   }
 }
