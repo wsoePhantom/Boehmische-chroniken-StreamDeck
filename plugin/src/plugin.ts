@@ -21,7 +21,7 @@ function display(metric: Metric, stats: Stats): [string, string, string] {
     case "history": return ["24H", "VERLAUF", "#ffffff"];
   }
 }
-class StatusAction extends SingletonAction<Settings> {
+class MetricAction extends SingletonAction<Settings> {
   private readonly timers = new Map<string, ReturnType<typeof setInterval>>();
   private readonly settings = new Map<string, Settings>();
   constructor(private readonly metric: Metric) { super(); }
@@ -62,22 +62,22 @@ class StatusAction extends SingletonAction<Settings> {
 }
 
 @action({ UUID: "de.boehmischechroniken.stats.status" })
-class StatusAction extends StatusAction { constructor() { super("status"); } }
+class StatusAction extends MetricAction { constructor() { super("status"); } }
 
 @action({ UUID: "de.boehmischechroniken.stats.players" })
-class PlayersAction extends StatusAction { constructor() { super("players"); } }
+class PlayersAction extends MetricAction { constructor() { super("players"); } }
 
 @action({ UUID: "de.boehmischechroniken.stats.record" })
-class RecordAction extends StatusAction { constructor() { super("record"); } }
+class RecordAction extends MetricAction { constructor() { super("record"); } }
 
 @action({ UUID: "de.boehmischechroniken.stats.ping" })
-class PingAction extends StatusAction { constructor() { super("ping"); } }
+class PingAction extends MetricAction { constructor() { super("ping"); } }
 
 @action({ UUID: "de.boehmischechroniken.stats.admins" })
-class AdminsAction extends StatusAction { constructor() { super("admins"); } }
+class AdminsAction extends MetricAction { constructor() { super("admins"); } }
 
 @action({ UUID: "de.boehmischechroniken.stats.history" })
-class HistoryAction extends StatusAction { constructor() { super("history"); } }
+class HistoryAction extends MetricAction { constructor() { super("history"); } }
 streamDeck.actions.registerAction(new StatusAction());
 streamDeck.actions.registerAction(new PlayersAction());
 streamDeck.actions.registerAction(new RecordAction());
