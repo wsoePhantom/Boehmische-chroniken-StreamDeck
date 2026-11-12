@@ -1,33 +1,29 @@
 # Böhmische Chroniken – Stream Deck
 
-Read-only KCD:MP statistics integration (in development).
+**Stable v1.0.0 – Standalone-Plugin für Windows.** Keine eigene Serverinfrastruktur, kein Docker, keine API-Schlüssel.
 
-## Planned metrics
-- Server online/offline
-- Current players / slots
-- Concurrent player record
-- Ping from Stream Deck host to game server
-- Online admins
-- Player history for 24 hours
+## Funktionen
+- **Serverstatus** – Online-Anzeige bei aktuellen Daten aus der öffentlichen KCD:MP-Serverliste
+- **Spieler online** – aktuelle Spielerzahl und maximale Slots
+- **Spielerrekord** – höchster lokal gemessener Spielerstand
+- **Spielerverlauf 24h** – lokal aufgezeichnete Spielerentwicklung
 
-Refresh every **60 seconds**.
+Alle 60 Sekunden werden die öffentlich verfügbaren Daten für `45.132.88.78:7777` abgefragt. Das Plugin benötigt nur die laufende Stream-Deck-Software und Internetzugriff. Die Daten werden unter `%APPDATA%\BoehmischeChroniken\streamdeck-stats.json` gespeichert und bleiben bei Updates erhalten.
 
-## Structure
-- `backend/`: Node.js TypeScript HTTP API scaffold
-- `plugin/`: TypeScript API client foundation
+Die Verlaufsanzeige erfasst ausschließlich Zeiten, in denen Stream Deck läuft. Ist die öffentliche Serverliste nicht erreichbar oder nicht aktuell, werden keine neuen Werte erfasst. „Online“ bezeichnet einen frisch gefundenen Eintrag in der Serverliste und ist kein eigenständiger Game-Server-Healthcheck.
 
-## Run the API locally
-Install Node.js 22+, then run `npm install`.
-Set `STATS_API_KEY` to a strong random secret and `DEMO_MODE=true` in your shell, then run `npm run dev:api`.
-Test `GET http://localhost:3100/api/v1/status` with header `Authorization: Bearer <your-secret>`.
+## Installation
+1. Die `Boehmische-Chroniken.streamDeckPlugin`-Datei aus dem GitHub-Release herunterladen.
+2. Per Doppelklick in der Stream-Deck-Software installieren.
+3. Die gewünschten Aktionen auf Tasten ziehen.
 
-Demo values are fictional and explicitly labeled. Without demo mode, endpoints return HTTP 503 until the KCD:MP adapter is connected. **This is not yet an installable Stream Deck plugin.**
+## Entwicklung
+```sh
+npm install
+npm test
+npm run build
+```
+Das GitHub-Actions-Build erzeugt ein installierbares Paket. Stable-Releases werden aus `main` veröffentlicht.
 
-## Next milestones
-1. Connect a real read-only KCD:MP adapter.
-2. Store player samples and records in PostgreSQL.
-3. Add Elgato action registration, manifest, icons and property inspector.
-4. Render six keys and a 24-hour chart.
-5. Package and test the plugin.
-
-Never commit credentials. Work on `dev`; merge stable releases to `main`.
+## Hinweise
+Die Werte stammen aus der öffentlichen KCD:MP-Serverliste und können verzögert sein. Das Plugin steht nicht in Verbindung mit Elgato.
