@@ -31,8 +31,7 @@
         {
           "Image": "imgs/status"
         }
-      ],
-      "PropertyInspectorPath": "property-inspector/index.html"
+      ]
     },
     {
       "Name": "Spieler online",
@@ -46,8 +45,7 @@
         {
           "Image": "imgs/players"
         }
-      ],
-      "PropertyInspectorPath": "property-inspector/index.html"
+      ]
     },
     {
       "Name": "Spielerrekord",
@@ -61,8 +59,7 @@
         {
           "Image": "imgs/record"
         }
-      ],
-      "PropertyInspectorPath": "property-inspector/index.html"
+      ]
     },
     {
       "Name": "Ping",
@@ -76,8 +73,7 @@
         {
           "Image": "imgs/ping"
         }
-      ],
-      "PropertyInspectorPath": "property-inspector/index.html"
+      ]
     },
     {
       "Name": "Admins online",
@@ -91,8 +87,7 @@
         {
           "Image": "imgs/admins"
         }
-      ],
-      "PropertyInspectorPath": "property-inspector/index.html"
+      ]
     },
     {
       "Name": "Spielerverlauf 24h",
@@ -106,8 +101,7 @@
         {
           "Image": "imgs/history"
         }
-      ],
-      "PropertyInspectorPath": "property-inspector/index.html"
+      ]
     }
   ]
 }
