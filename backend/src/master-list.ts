@@ -1,4 +1,4 @@
-/** Public KCD:MP master-list reader. The HTML structure is not a stable API contract. */
+/** Public KCD:MP server-list reader. No undocumented JSON endpoint assumed. */
 export const MASTER_LIST_URL = "https://kcd-mp.com/server-list";
 export const TARGET_SERVER = "45.132.88.78:7777";
 export const POLL_INTERVAL_MS = 60_000;
@@ -12,23 +12,24 @@ export type ServerListing = {
   source: "public-master-list";
 };
 
-function stripTags(s: string): string {
-  return s.replace(/<[^>]*>/g, " ").replace(/&nbsp;/g, " ").replace(/\s+/g, " ");
+function textOf(html: string): string {
+  return html.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, " ")
+    .replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi, " ")
+    .replace(/<[^>]*>/g, " ")
+    .replace(/&nbsp;|&#160;/gi, " ")
+    .replace(/\s+/g, " ").trim();
 }
 
 export function parseServerListing(html: string, address = TARGET_SERVER): ServerListing | null {
-  // Match only the HTML table row containing this exact server address.
-  // Do not accidentally read the player count of the previous server.
+  // Prefer a single table row; never pair another server's player count with our address.
   const rows = html.match(/<tr\b[^>]*>[\s\S]*?<\/tr>/gi) ?? [];
-  const row = rows.find(r => stripTags(r).includes(address));
+  const row = rows.find(candidate => textOf(candidate).includes(address));
   if (!row) return null;
-  const text = stripTags(row);
-  const escaped = address.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  const matches = [...text.matchAll(/\b(\d+)\s*\/\s*(\d+)\b/g)];
-  if (matches.length !== 1 || !new RegExp(escaped).test(text)) return null;
-  const players = Number(matches[0][1]);
-  const maxPlayers = Number(matches[0][2]);
-  if (!Number.isSafeInteger(players) || !Number.isSafeInteger(maxPlayers) || maxPlayers < 1 || players > maxPlayers) return null;
+  const cells = row.match(/<td\b[^>]*>[\s\S]*?<\/td>/gi) ?? [];
+  const counts = cells.flatMap(cell => [...textOf(cell).matchAll(/\b(\d+)\s*\/\s*(\d+)\b/g)]);
+  if (counts.length !== 1) return null;
+  const players = Number(counts[0][1]), maxPlayers = Number(counts[0][2]);
+  if (!Number.isSafeInteger(players) || !Number.isSafeInteger(maxPlayers) || players < 0 || maxPlayers < 1 || players > maxPlayers) return null;
   return { address, players, maxPlayers, checkedAt: new Date().toISOString(), source: "public-master-list" };
 }
 
