@@ -20,7 +20,13 @@ jobs:
       - run: npx --yes esbuild plugin/src/plugin.ts --bundle --platform=node --format=cjs --target=node20 --outfile=build/de.boehmischechroniken.stats.sdPlugin/plugin.js
       - run: python -m pip install pillow
       - run: python scripts/assemble-plugin.py
+      - name: Create installable Stream Deck archive
+        run: |
+          cd build
+          zip -qr Boehmische-Chroniken.streamDeckPlugin de.boehmischechroniken.stats.sdPlugin
       - uses: actions/upload-artifact@v4
         with:
           name: streamdeck-prototype-unpacked
-          path: build/de.boehmischechroniken.stats.sdPlugin/
+          path: |
+            build/de.boehmischechroniken.stats.sdPlugin/
+            build/Boehmische-Chroniken.streamDeckPlugin
