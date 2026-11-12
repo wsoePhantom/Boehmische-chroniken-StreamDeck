@@ -28,4 +28,4 @@ jobs:
       - name: Publish release with installer
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release create "v0.1.0" build/Boehmische-Chroniken.streamDeckPlugin --target "${GITHUB_SHA}" --title "Böhmische Chroniken v0.1.0 (Standalone)" --notes "Standalone Stream Deck plugin. No external statistics server required. Player statistics are collected locally while Stream Deck runs. Ping and admin count are not available from the public listing."
+        run: gh release create "v0.1.1" build/Boehmische-Chroniken.streamDeckPlugin --target "${GITHUB_SHA}" --title "Böhmische Chroniken v0.1.1 (Standalone)" --notes "Standalone Stream Deck plugin. No external statistics server required. Player statistics are collected locally while Stream Deck runs. Ping and admin count are not available from the public listing."

@@ -2,7 +2,7 @@
   "Name": "Böhmische Chroniken",
   "Description": "KCD:MP Serverstatistiken für Böhmische Chroniken",
   "Author": "Böhmische Chroniken",
-  "Version": "0.1.0",
+  "Version": "0.1.1",
   "SDKVersion": 2,
   "Software": {
     "MinimumVersion": "6.5"
