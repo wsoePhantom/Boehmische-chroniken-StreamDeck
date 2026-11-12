@@ -1,12 +1,12 @@
 # Böhmische Chroniken – Stream Deck
 
-**Stable v1.0.0 – Standalone-Plugin für Windows.** Keine eigene Serverinfrastruktur, kein Docker, keine API-Schlüssel.
+**Stable v1.0.1 – Standalone-Plugin für Windows.** Keine eigene Serverinfrastruktur, kein Docker, keine API-Schlüssel.
 
 ## Funktionen
 - **Serverstatus** – Online-Anzeige bei aktuellen Daten aus der öffentlichen KCD:MP-Serverliste
 - **Spieler online** – aktuelle Spielerzahl und maximale Slots
 - **Spielerrekord** – höchster lokal gemessener Spielerstand
-- **Spielerverlauf 24h** – lokal aufgezeichnete Spielerentwicklung
+- **Spielerverlauf 5h** – lokal aufgezeichnete Spielerentwicklung
 
 Alle 60 Sekunden werden die öffentlich verfügbaren Daten für `45.132.88.78:7777` abgefragt. Das Plugin benötigt nur die laufende Stream-Deck-Software und Internetzugriff. Die Daten werden unter `%APPDATA%\BoehmischeChroniken\streamdeck-stats.json` gespeichert und bleiben bei Updates erhalten.
 
