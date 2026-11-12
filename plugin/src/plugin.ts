@@ -10,7 +10,7 @@ function svg(label: string, value: string, color = "#e5e7eb"): string {
   return `<svg xmlns="http://www.w3.org/2000/svg" width="144" height="144" viewBox="0 0 144 144"><rect width="144" height="144" rx="15" fill="#1e2b24"/><text x="72" y="48" fill="#aab8ac" font-size="15" font-family="Arial" text-anchor="middle">${safe(label)}</text><text x="72" y="93" fill="${color}" font-size="25" font-weight="bold" font-family="Arial" text-anchor="middle">${safe(value)}</text></svg>`;
 }
 function imageData(svgString: string): string {
-  return "data:image/svg+xml," + encodeURIComponent(svgString);
+  return "data:image/svg+xml;base64," + Buffer.from(svgString, "utf8").toString("base64");
 }
 function historySvg(samples: { timestamp: string; players: number }[]): string {
   const now = Date.now();
@@ -68,8 +68,10 @@ class MetricAction extends SingletonAction<Settings> {
       } else {
         await target.setImage(imageData(svg(label, value, color)));
       }
-    } catch {
-      await target.setImage(imageData(svg("VERBINDUNG", "FEHLER", "#ef8585")));
+    } catch (error) {
+      streamDeck.logger.error("Rendering failed:", error);
+      try { await target.setImage(imageData(svg("VERBINDUNG", "FEHLER", "#ef8585"))); }
+      catch (imageError) { streamDeck.logger.error("Setting error image failed:", imageError); }
     }
   }
 }
